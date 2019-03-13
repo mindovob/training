@@ -1,31 +1,42 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-toolbar app>
+      <v-toolbar-title class="headline">
+        <span>Azure  </span>
+        <span class="font-weight-light">Sample Apps</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu>
+        <v-btn flat slot="activator">MENU</v-btn>
+        <v-list>
+          <v-list-tile flat href="/sample1">
+            <v-list-tile-title class="mr-2">DEMO 1</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile flat href="/sample2">
+            <v-list-tile-title class="mr-2">DEMO 2</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile flat href="/sample3">
+            <v-list-tile-title class="mr-2">DEMO 3</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </v-toolbar>
+    <v-content>
+      <router-view/>
+    </v-content>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+export default {
+  name: 'App',
+  components: {
+  },
+  data () {
+    return {
+      //
+    }
+  }
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>
