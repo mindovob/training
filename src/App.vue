@@ -18,6 +18,9 @@
           <v-list-tile flat href="/sample3">
             <v-list-tile-title class="mr-2">DEMO 3</v-list-tile-title>
           </v-list-tile>
+          <v-list-tile flat href="/sample4">
+            <v-list-tile-title class="mr-2">DEMO 4</v-list-tile-title>
+          </v-list-tile>
         </v-list>
       </v-menu>
     </v-toolbar>
