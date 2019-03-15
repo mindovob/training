@@ -137,6 +137,8 @@
               canvas.setAttribute("height", "800");
               ctx.drawImage(img, 0, 0, sh_width, 400);
             } else {
+              canvas.width = img.naturalWidth;
+              canvas.height = img.naturalHeight;
               ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
             }
           }
@@ -145,30 +147,76 @@
           console.log(response.data);
           emoji.onload = function() {
               response.data.forEach(function(person){
-                let x1 = person.faceLandmarks.eyeLeftBottom.x * canvas.width / img.width;
-                let y1 = person.faceLandmarks.eyeLeftBottom.y * canvas.height / img.height;
-                let x2 = person.faceLandmarks.eyeLeftInner.x * canvas.height / img.height;
-                let y2 = person.faceLandmarks.eyeLeftInner.y * canvas.height / img.height;
-                let x3 = person.faceLandmarks.eyeLeftOuter.x * canvas.height / img.height;
-                let y3 = person.faceLandmarks.eyeLeftOuter.y * canvas.height / img.height;
-                let x4 = person.faceLandmarks.eyeLeftTop.x * canvas.height / img.height;
-                let y4 = person.faceLandmarks.eyeLeftTop.y * canvas.height / img.height;
-                let x11 = person.faceLandmarks.eyeRightBottom.x * canvas.width / img.width;
-                let y11 = person.faceLandmarks.eyeRightBottom.y * canvas.height / img.height;
-                let x12 = person.faceLandmarks.eyeRightInner.x * canvas.height / img.height;
-                let y12 = person.faceLandmarks.eyeRightInner.y * canvas.height / img.height;
-                let x13 = person.faceLandmarks.eyeRightOuter.x * canvas.height / img.height;
-                let y13 = person.faceLandmarks.eyeRightOuter.y * canvas.height / img.height;
-                let x14 = person.faceLandmarks.eyeRightTop.x * canvas.height / img.height;
-                let y14 = person.faceLandmarks.eyeRightTop.y * canvas.height / img.height;
-                ctx.drawImage(emoji, x1, y1, 5, 5);
-                ctx.drawImage(emoji, x2, y2, 5, 5);
-                ctx.drawImage(emoji, x3, y3, 5, 5);
-                ctx.drawImage(emoji, x4, y4, 5, 5);
-                ctx.drawImage(emoji, x11, y11, 5, 5);
-                ctx.drawImage(emoji, x12, y12, 5, 5);
-                ctx.drawImage(emoji, x13, y13, 5, 5);
-                ctx.drawImage(emoji, x14, y14, 5, 5);
+                let parts = person.faceLandmarks;
+                let scale_h = canvas.height / img.height;
+                let scale_w = canvas.width / img.width;
+
+                //左目
+                let eye_l_x1 = parts.eyeLeftBottom.x * scale_w;
+                let eye_l_y1 = parts.eyeLeftBottom.y * scale_h;
+                let eye_l_x2 = parts.eyeLeftInner.x * scale_w;
+                let eye_l_y2 = parts.eyeLeftInner.y * scale_h;
+                let eye_l_x3 = parts.eyeLeftOuter.x * scale_w;
+                let eye_l_y3 = parts.eyeLeftOuter.y * scale_h;
+                let eye_l_x4 = parts.eyeLeftTop.x * scale_w;
+                let eye_l_y4 = parts.eyeLeftTop.y * scale_h;
+                ctx.fillRect(eye_l_x1, eye_l_y1, 1, 1);
+                ctx.fillRect(eye_l_x2, eye_l_y2, 1, 1);
+                ctx.fillRect(eye_l_x4, eye_l_y4, 1, 1);
+                ctx.fillRect(eye_l_x3, eye_l_y3, 1, 1);
+                console.log(Math.abs(eye_l_x1-eye_l_x4));
+
+                //右目
+                let eye_r_x1 = parts.eyeRightBottom.x * scale_w;
+                let eye_r_y1 = parts.eyeRightBottom.y * scale_h;
+                let eye_r_x2 = parts.eyeRightInner.x * scale_w;
+                let eye_r_y2 = parts.eyeRightInner.y * scale_h;
+                let eye_r_x3 = parts.eyeRightOuter.x * scale_w;
+                let eye_r_y3 = parts.eyeRightOuter.y * scale_h;
+                let eye_r_x4 = parts.eyeRightTop.x * scale_w;
+                let eye_r_y4 = parts.eyeRightTop.y * scale_h;
+                ctx.fillRect(eye_r_x1, eye_r_y1, 1, 1);
+                ctx.fillRect(eye_r_x2, eye_r_y2, 1, 1);
+                ctx.fillRect(eye_r_x3, eye_r_y3, 1, 1);
+                ctx.fillRect(eye_r_x4, eye_r_y4, 1, 1);
+
+                //左眉
+                let eyebrow_l_x1 = parts.eyebrowLeftInner.x * scale_w;
+                let eyebrow_l_y1 = parts.eyebrowLeftInner.y * scale_h;
+                let eyebrow_l_x2 = parts.eyebrowLeftOuter.x * scale_w;
+                let eyebrow_l_y2 = parts.eyebrowLeftOuter.y * scale_h;
+                ctx.fillRect(eyebrow_l_x1, eyebrow_l_y1, Math.abs(eyebrow_l_x2-eyebrow_l_x1), Math.abs(eyebrow_l_y2-eyebrow_l_y1));
+
+                //右眉
+                let eyebrow_r_x1 = parts.eyebrowRightInner.x * scale_w;
+                let eyebrow_r_y1 = parts.eyebrowRightInner.y * scale_h;
+                let eyebrow_r_x2 = parts.eyebrowRightOuter.x * scale_w;
+                let eyebrow_r_y2 = parts.eyebrowRightOuter.y * scale_h;
+                ctx.fillRect(eyebrow_r_x1, eyebrow_r_y1, Math.abs(eyebrow_r_x2-eyebrow_r_x1), Math.abs(eyebrow_r_y2-eyebrow_r_y1));
+
+                //鼻
+                let noseAlarOut_l_x = parts.noseLeftAlarOutTip.x * scale_w;
+                let noseAlarOut_l_y = parts.noseLeftAlarOutTip.y * scale_h;
+                let noseAlar_l_x = parts.noseLeftAlarTop.x * scale_w;
+                let noseAlar_l_y = parts.noseLeftAlarTop.y * scale_h;
+                let noseAlarOut_r_x = parts.noseRightAlarOutTip.x * scale_w;
+                let noseAlarOut_r_y = parts.noseRightAlarOutTip.y * scale_h;
+                let noseAlar_r_x = parts.noseRightAlarTop.x * scale_w;
+                let noseAlar_r_y = parts.noseRightAlarTop.y * scale_h;
+                let noseRoot_l_x = parts.noseRootLeft.x * scale_w;
+                let noseRoot_l_y = parts.noseRootLeft.y * scale_h;
+                let noseRoot_r_x = parts.noseRootRight.x * scale_w;
+                let noseRoot_r_y = parts.noseRootRight.y * scale_h;
+                let noseTip_x = parts.noseTip.x * scale_w;
+                let noseTip_y = parts.noseTip.y * scale_h;
+                ctx.fillRect(noseAlarOut_l_x, noseAlarOut_l_y, 3, 3);
+                ctx.fillRect(noseAlar_l_x, noseAlar_l_y, 3, 3);
+                ctx.fillRect(noseRoot_l_x, noseRoot_l_y, 3, 3);
+                ctx.fillRect(noseAlarOut_r_x, noseAlarOut_r_y, 3, 3);
+                ctx.fillRect(noseAlar_r_x, noseAlar_r_y, 3, 3);
+                ctx.fillRect(noseRoot_r_x, noseRoot_r_y, 3, 3);
+                ctx.fillRect(noseTip_x, noseTip_y, 3, 3);
+
               })
           }
           emoji.src = this.emo_list[this.emoId];
